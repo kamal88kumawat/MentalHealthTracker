@@ -35,13 +35,13 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   downloadBtn.addEventListener("click", function () {
-    window.location.href = "http://localhost:5000/download";
+    window.location.href = "https://mentalhealthtracker-3eip.onrender.com/download";
   });
 
   emailBtn.addEventListener("click", async function () {
     const email = document.getElementById("email").value;
     try {
-      const response = await fetch("http://localhost:5000/send_email", {
+      const response = await fetch("https://mentalhealthtracker-3eip.onrender.com/send_email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
