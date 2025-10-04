@@ -47,6 +47,62 @@
     <span>Chat with us</span>
   </div>
   <script src="chatbot.js"></script>
+  <script>
+const form = document.querySelector('form');
+const submitBtn = form.querySelector('button[type="submit"]');
+
+// Create Download & Email buttons dynamically
+const downloadBtn = document.createElement('button');
+downloadBtn.textContent = "Download Report";
+downloadBtn.disabled = true;
+downloadBtn.style.marginTop = "10px";
+form.appendChild(downloadBtn);
+
+const emailBtn = document.createElement('button');
+emailBtn.textContent = "Send Report via Email";
+emailBtn.disabled = true;
+emailBtn.style.marginTop = "10px";
+form.appendChild(emailBtn);
+
+let pdfFile = "";
+
+form.addEventListener('submit', function(e){
+    e.preventDefault();
+    const formData = new FormData(form);
+
+    fetch('/submit', { method: 'POST', body: formData })
+    .then(res => res.json())
+    .then(data => {
+        if(data.status === 'success'){
+            pdfFile = data.pdf;
+            alert("Report generated successfully!");
+            downloadBtn.disabled = false;
+            emailBtn.disabled = false;
+        }
+    });
+});
+
+downloadBtn.addEventListener('click', ()=>{
+    window.location.href = pdfFile;
+});
+
+emailBtn.addEventListener('click', ()=>{
+    const email = form.querySelector('#email').value;
+    if(!email){ alert("Please enter your email"); return; }
+
+    fetch('/send_email', {
+        method: 'POST',
+        headers: {'Content-Type':'application/x-www-form-urlencoded'},
+        body: `email=${encodeURIComponent(email)}&pdf_file=${encodeURIComponent(pdfFile)}`
+    }).then(res=>res.json())
+    .then(data=>{
+        if(data.status==='email_sent'){
+            alert("Report sent to your email!");
+        }
+    });
+});
+</script>
+
 
   <footer>
     <p>&copy; 2025 Mental Health Tracker | Helpline: 1800-123-4567</p>
@@ -54,6 +110,7 @@
 
 </body>
 </html>
+
 
 
 
