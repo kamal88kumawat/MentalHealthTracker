@@ -1,42 +1,55 @@
-const form = document.getElementById('mentalForm');
-const downloadBtn = document.getElementById('downloadBtn');
-const emailBtn = document.getElementById('emailBtn');
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.getElementById("mentalHealthForm");
+  const downloadBtn = document.getElementById("downloadBtn");
+  const emailBtn = document.getElementById("emailBtn");
+  const messageDiv = document.getElementById("message");
 
-let pdfFile = "";
+  downloadBtn.style.display = "none";
+  emailBtn.style.display = "none";
 
-form.addEventListener('submit', e=>{
+  form.addEventListener("submit", async function (e) {
     e.preventDefault();
-    const formData = new FormData(form);
 
-    fetch('/submit',{method:'POST', body: formData})
-    .then(res=>res.json())
-    .then(data=>{
-        if(data.status==='success'){
-            alert("Report generated!");
-            pdfFile = data.pdf_file;
-            downloadBtn.disabled = false;
-            emailBtn.disabled = false;
-        }
-    });
-});
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const age = document.getElementById("age").value;
+    const weight = document.getElementById("weight").value;
+    const mood = document.getElementById("mood").value;
 
-downloadBtn.addEventListener('click', ()=>{
-    window.location.href = pdfFile;
-});
+    const data = { name, email, age, weight, mood };
 
-emailBtn.addEventListener('click', ()=>{
-    const email = form.querySelector('#email').value;
-    if(!email){ alert("Enter your email"); return; }
+    try {
+      const response = await fetch("http://localhost:5000/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
 
-    fetch('/send_email',{
-        method:'POST',
-        headers: {'Content-Type':'application/x-www-form-urlencoded'},
-        body: `email=${encodeURIComponent(email)}&pdf_file=${encodeURIComponent(pdfFile)}`
-    })
-    .then(res=>res.json())
-    .then(data=>{
-        if(data.status==='email_sent'){
-            alert("Report sent to your email!");
-        }
-    });
+      const result = await response.json();
+      messageDiv.innerText = "✅ " + result.message;
+      downloadBtn.style.display = "inline-block";
+      emailBtn.style.display = "inline-block";
+    } catch (error) {
+      messageDiv.innerText = "❌ Error submitting form: " + error;
+    }
+  });
+
+  downloadBtn.addEventListener("click", function () {
+    window.location.href = "http://localhost:5000/download";
+  });
+
+  emailBtn.addEventListener("click", async function () {
+    const email = document.getElementById("email").value;
+    try {
+      const response = await fetch("http://localhost:5000/send_email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      const result = await response.json();
+      messageDiv.innerText = "📧 " + result.message;
+    } catch (error) {
+      messageDiv.innerText = "❌ Error sending email: " + error;
+    }
+  });
 });
