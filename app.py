@@ -1,97 +1,92 @@
 from flask import Flask, render_template, request, jsonify, send_file
+from flask_cors import CORS
 from fpdf import FPDF
-import os
-import pandas as pd
 import smtplib
-from email.mime.multipart import MIMEMultipart
-from email.mime.application import MIMEApplication
-from email.mime.text import MIMEText
-from dotenv import load_dotenv
-
-# Load environment variables from config.env
-load_dotenv('config.env')
-EMAIL_ADDRESS = os.getenv('EMAIL_ADDRESS')
-EMAIL_PASSWORD = os.getenv('EMAIL_PASSWORD')
-REPORTS_FOLDER = os.getenv('REPORTS_FOLDER', 'reports')
-
-os.makedirs(REPORTS_FOLDER, exist_ok=True)
+from email.message import EmailMessage
+import os
 
 app = Flask(__name__)
+CORS(app)
 
-# Home & Form routes
+# --------- Email Configuration (from config.env) ----------
+from dotenv import load_dotenv
+load_dotenv()
+
+EMAIL_USER = os.getenv("EMAIL_USER")
+EMAIL_PASS = os.getenv("EMAIL_PASS")
+
+# --------- Home ----------
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return "Mental Health Tracker Backend Running"
 
-@app.route('/form')
-def form():
-    return render_template('form.html')
-
-# Submit route
+# --------- Submit Form ----------
 @app.route('/submit', methods=['POST'])
-def submit():
-    data = request.form.to_dict()
-    name = data.get('name', 'User')
+def submit_form():
+    data = request.get_json()
+    name = data.get('name')
+    email = data.get('email')
+    age = data.get('age')
+    weight = data.get('weight')
+    mood = data.get('mood')
 
-    # Save CSV
-    df = pd.DataFrame([data])
-    csv_file = os.path.join(REPORTS_FOLDER, f"{name}_data.csv")
-    df.to_csv(csv_file, index=False)
+    # Calculate sample score
+    score = 0
+    if mood.lower() in ['sad', 'stressed', 'angry']:
+        score = 30
+    elif mood.lower() in ['neutral']:
+        score = 60
+    else:
+        score = 90
 
-    # Simple score calculation
-    stress = int(data.get('stress', 5))
-    anxiety = data.get('anxiety', 'sometimes')
-    score = stress
-    if anxiety == 'rarely':
-        score -= 2
-    elif anxiety == 'sometimes':
-        score += 0
-    elif anxiety == 'often':
-        score += 2
-    elif anxiety == 'always':
-        score += 3
-
-    # Generate PDF
-    pdf_file = os.path.join(REPORTS_FOLDER, f"{name}_report.pdf")
+    # Generate Report
     pdf = FPDF()
     pdf.add_page()
-    pdf.set_font("Arial", 'B', 16)
-    pdf.cell(0, 10, f"Mental Health Report - {name}", ln=True)
-    pdf.set_font("Arial", '', 12)
+    pdf.set_font("Arial", "B", 16)
+    pdf.cell(200, 10, txt="Mental Health Report", ln=True, align="C")
     pdf.ln(10)
-    for key, val in data.items():
-        pdf.cell(0, 10, f"{key}: {val}", ln=True)
-    pdf.cell(0, 10, f"Score: {score}", ln=True)
-    pdf.output(pdf_file)
+    pdf.set_font("Arial", size=12)
+    pdf.cell(200, 10, txt=f"Name: {name}", ln=True)
+    pdf.cell(200, 10, txt=f"Email: {email}", ln=True)
+    pdf.cell(200, 10, txt=f"Age: {age}", ln=True)
+    pdf.cell(200, 10, txt=f"Weight: {weight}", ln=True)
+    pdf.cell(200, 10, txt=f"Mood: {mood}", ln=True)
+    pdf.cell(200, 10, txt=f"Overall Score: {score}%", ln=True)
+    pdf.cell(200, 10, txt="Status: Good Mental Health" if score >= 60 else "Needs Attention", ln=True)
 
-    return jsonify({'status': 'success', 'pdf_file': pdf_file})
+    file_path = "mental_health_report.pdf"
+    pdf.output(file_path)
 
-# Send Email
+    return jsonify({"message": "Form submitted successfully!", "score": score, "report": file_path})
+
+# --------- Download Report ----------
+@app.route('/download', methods=['GET'])
+def download_report():
+    return send_file("mental_health_report.pdf", as_attachment=True)
+
+# --------- Send Report via Email ----------
 @app.route('/send_email', methods=['POST'])
 def send_email():
-    email_to = request.form['email']
-    pdf_file = request.form['pdf_file']
+    data = request.get_json()
+    email = data.get('email')
 
-    msg = MIMEMultipart()
-    msg['From'] = EMAIL_ADDRESS
-    msg['To'] = email_to
-    msg['Subject'] = "Mental Health Report"
+    msg = EmailMessage()
+    msg['Subject'] = "Your Mental Health Report"
+    msg['From'] = EMAIL_USER
+    msg['To'] = email
+    msg.set_content("Attached is your Mental Health Report. Take care of your well-being!")
 
-    body = "Dear User,\nPlease find attached your mental health report."
-    msg.attach(MIMEText(body))
+    with open("mental_health_report.pdf", "rb") as f:
+        msg.add_attachment(f.read(), maintype='application', subtype='pdf', filename="Mental_Health_Report.pdf")
 
-    with open(pdf_file, 'rb') as f:
-        attach = MIMEApplication(f.read(), _subtype='pdf')
-        attach.add_header('Content-Disposition', 'attachment', filename=os.path.basename(pdf_file))
-        msg.attach(attach)
+    try:
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+            smtp.login(EMAIL_USER, EMAIL_PASS)
+            smtp.send_message(msg)
+        return jsonify({"message": f"Report sent successfully to {email}!"})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
-    server = smtplib.SMTP('smtp.gmail.com', 587)
-    server.starttls()
-    server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
-    server.send_message(msg)
-    server.quit()
-
-    return jsonify({'status': 'email_sent'})
 
 if __name__ == '__main__':
     app.run(debug=True)
