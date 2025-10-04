@@ -1,0 +1,134 @@
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mental Health Tracker Form</title>
+  <link rel="stylesheet" href="form.css">
+</head>
+<body>
+
+  <div class="form-container">
+    <h1>Mental Health Tracker</h1>
+    <form action="#" method="post">
+
+      <!-- Personal Info -->
+      <h2>Personal Info</h2>
+
+      <div class="form-group">
+        <label for="name">Full Name:</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" required>
+      </div>
+
+      <div class="form-group">
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender" required>
+          <option value="">--Select--</option>
+          <option>Female</option>
+          <option>Male</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="occupation">Occupation/Student:</label>
+        <input type="text" id="occupation" name="occupation">
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+
+      <!-- Mental Health Check -->
+      <h2>Mental Health Check</h2>
+
+      <div class="form-group">
+        <label for="stress">On a scale of 1–10, how stressed are you?</label>
+        <input type="range" id="stress" name="stress" min="1" max="10">
+      </div>
+
+      <div class="form-group">
+        <p>How often do you feel anxious or overwhelmed?</p>
+        <div class="options">
+          <label><input type="radio" name="anxiety" value="rarely"> Rarely</label>
+          <label><input type="radio" name="anxiety" value="sometimes"> Sometimes</label>
+          <label><input type="radio" name="anxiety" value="often"> Often</label>
+          <label><input type="radio" name="anxiety" value="always"> Almost Always</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <p>How is your sleep quality?</p>
+        <div class="options">
+          <label><input type="radio" name="sleep" value="good"> Always good</label>
+          <label><input type="radio" name="sleep" value="disturbed"> Sometimes disturbed</label>
+          <label><input type="radio" name="sleep" value="rarely"> Rarely good</label>
+          <label><input type="radio" name="sleep" value="bad"> Almost never good</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <p>Do you have someone to talk to when stressed?</p>
+        <div class="options">
+          <label><input type="radio" name="support" value="yes"> Yes, always</label>
+          <label><input type="radio" name="support" value="sometimes"> Sometimes</label>
+          <label><input type="radio" name="support" value="no"> No</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <p>How often do you exercise or stay active?</p>
+        <div class="options">
+          <label><input type="radio" name="exercise" value="daily"> Daily</label>
+          <label><input type="radio" name="exercise" value="weekly"> Few times a week</label>
+          <label><input type="radio" name="exercise" value="rarely"> Rarely</label>
+          <label><input type="radio" name="exercise" value="never"> Never</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <p>How comfortable are you seeking professional help?</p>
+        <div class="options">
+          <label><input type="radio" name="help" value="comfortable"> Very comfortable</label>
+          <label><input type="radio" name="help" value="maybe"> Maybe</label>
+          <label><input type="radio" name="help" value="not"> Not at all</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <p>What are your main stress reasons?</p>
+        <div class="checkbox-options">
+          <label><input type="checkbox" name="stress_reasons" value="studies"> Studies/Work</label>
+          <label><input type="checkbox" name="stress_reasons" value="relationships"> Relationships</label>
+          <label><input type="checkbox" name="stress_reasons" value="family"> Family</label>
+          <label><input type="checkbox" name="stress_reasons" value="finance"> Financial issues</label>
+          <label><input type="checkbox" name="stress_reasons" value="social"> Social Media</label>
+          <label><input type="checkbox" name="stress_reasons" value="other"> Other</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="motivation">What motivates you during tough times?</label>
+        <textarea id="motivation" name="motivation" rows="3"></textarea>
+      </div>
+
+      <div class="form-group">
+        <p>Which emoji best describes your current mood?</p>
+        <div class="mood">
+          😀 😍 😌 😕 😢 😡 😴
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+</body>
+</html>
