@@ -1,4 +1,6 @@
-flask
-flask-cors
+Flask
+gunicorn
+Flask-Cors
 reportlab
 python-dotenv
+requests
