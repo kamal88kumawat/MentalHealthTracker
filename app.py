@@ -82,7 +82,7 @@ def download_report():
 @app.route('/send_email', methods=['POST'])
 def send_email():
     try:
-        data = request.get_json()
+        data = request.form
         email = data.get('email')
 
         if not email:
