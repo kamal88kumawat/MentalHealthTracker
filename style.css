@@ -90,130 +90,123 @@ body {
   }
 
 
-  /* Bottom chatbot container */
+/* --- CHATBOT STYLING (NEW/UPDATED) --- */
+
+/* Bottom chatbot container */
 .chatbot-container {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 300px;
-  height: 60px;
-  background-color: #f0f8ff; /* light pastel blue */
-  border-radius: 30px;
-  display: flex;
-  align-items: center;
-  padding: 0 15px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  cursor: pointer;
-  transition: all 0.3s ease; /* smooth transition */
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 300px;
+  height: 60px;
+  background-color: #f0f8ff; 
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
-
-.chatbot-container img {
-  height: 40px;
-  width: 40px;
-  margin-right: 10px;
-  transition: transform 0.3s ease;
-}
-
-.chatbot-container span {
-  font-size: 16px;
-  color: #003366;
-  transition: color 0.3s ease;
-}
-
-/* Hover effect */
-/* Hover effect */
+/* Hover Fix */
 .chatbot-container:hover {
-  transform: scale(1.05); /* ⬅️ translateX(-50%) hataya */
+  transform: scale(1.05); /* Only scale, no sideways shift */
   box-shadow: 0 8px 20px rgba(0,0,0,0.3);
   background-color: #e0f0ff;
 }
-
+.chatbot-container img {
+  height: 40px;
+  width: 40px;
+  margin-right: 10px;
+  transition: transform 0.3s ease;
+}
 .chatbot-container:hover img {
-  transform: rotate(10deg); /* subtle rotation */
+  transform: rotate(10deg);
+}
+.chatbot-container span {
+  font-size: 16px;
+  color: #003366;
+  transition: color 0.3s ease;
 }
 
-.chatbot-container:hover span {
-  color: #0055aa; /* darker text on hover */
-}
-  
-  footer {
-    background-color: #6a9fb5;
-    color: white;
-    text-align: center;
-    padding: 15px 10px;
-  }
-
+/* Chatbot Window */
 .chatbot-window {
-    /* Position aur size set karte hain */
-    position: fixed;
-    bottom: 90px;
-    right: 20px;
-    width: 350px;
-    height: 450px; 
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    
-    /* Display properties (JS ke liye) */
-    display: none; /* Initially hidden */
-    flex-direction: column;
-    overflow: hidden;
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 350px;
+    height: 450px; 
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    display: none; 
+    flex-direction: column;
+    overflow: hidden;
 }
+
+/* Chat Header (Logo/Text/Close) */
 .chat-header {
-    display: flex;
-    /* content ko dono side push karo */
-    justify-content: space-between; 
-    align-items: center;
-    padding: 10px;
-    background-color: #6a9fb5; 
-    color: white;
+    display: flex;
+    justify-content: space-between; /* Cross button ko right push karta hai */
+    align-items: center;
+    padding: 10px;
+    background-color: #6a9fb5; 
+    color: white;
 }
+
+.chat-header img {
+    height: 30px; 
+    width: 30px;
+    margin-right: 12px; /* Logo aur Text mein gap */
+}
+
+/* Close Button Styling */
 .chat-header .close-btn {
-    /* Button ko default styling se hatana */
     background: none;
     border: none;
     color: white;
     font-size: 18px;
     cursor: pointer;
-    padding: 5px; /* Thoda padding takki click karna easy ho */
-    margin-left: 10px; /* Text se thoda door */
-    /* Remove default button focus/hover effects if needed */
+    padding: 5px; 
+    margin-left: 10px;
     outline: none;
 }
 
-.chat-header img {
-    height: 30px; 
-    width: 30px;
-    margin-right: 12px; /* ⬅️ Gap badhaya */
-}
-
+/* Chat Body */
 .chat-body {
-    flex-grow: 1;
-    padding: 10px;
-    overflow-y: auto;
-    background-color: #f9f9f9;
+    flex-grow: 1;
+    padding: 10px;
+    overflow-y: auto;
+    background-color: #f9f9f9;
 }
 
-/* Chat messages ke liye bhi styling add karna padega (user aur bot) */
-.message {
-    padding: 8px;
-    border-radius: 10px;
-    margin-bottom: 8px;
-    max-width: 80%;
-}
-/* ... (aur styling tum apne hisaab se kar sakte ho) ... */
-
-  /* 3. Input Box ki height badhana */
+/* Input Box Styling */
 #chatInput {
-    /* Yeh naya code hai */
     width: 100%;
-    padding: 12px 10px; /* ⬅️ Height badhane ke liye padding badhaya */
-    box-sizing: border-box; /* Padding andar hi rahe */
+    padding: 12px 10px; /* Height badhi */
+    box-sizing: border-box; 
     border: 1px solid #ccc;
     border-top: none;
     font-size: 15px;
+}
+
+/* Message Bubbles (For completeness) */
+.message {
+    padding: 8px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    max-width: 80%;
+}
+.message.user {
+    background-color: #d1e7ff;
+    align-self: flex-end;
+    margin-left: auto;
+}
+.message.bot {
+    background-color: #fff;
+    align-self: flex-start;
 }
 
 
@@ -221,4 +214,5 @@ body {
 
 
   
+
 
