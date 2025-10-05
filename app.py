@@ -78,16 +78,51 @@ def download_report():
         return jsonify({"error": "No report found"}), 404
 
 
-# -------- Send Report via Email --------
+# -------- Send Report via Email (UPDATED) --------
 @app.route('/send_email', methods=['POST'])
 def send_email():
     try:
-        data = request.form
+        # FIX: Now expecting JSON data (like /submit) to regenerate PDF
+        data = request.get_json() 
+        
+        # Saare required fields nikal rahe hain
         email = data.get('email')
+        name = data.get('name', 'Unknown')
+        age = data.get('age', 'N/A')
+        weight = data.get('weight', 'N/A')
+        mood = data.get('mood', 'neutral')
 
         if not email:
             return jsonify({"error": "Email not provided"}), 400
 
+        # ----- Logic for Score (Copied from /submit to ensure PDF generation) -----
+        if mood.lower() in ['sad', 'stressed', 'angry']:
+            score = 30
+            status = "Needs Attention 🧠"
+        elif mood.lower() == 'neutral':
+            score = 60
+            status = "Average Mental State 🙂"
+        else:
+            score = 90
+            status = "Good Mental Health 😊"
+
+        # ----- Generate PDF (Essential step before sending email) -----
+        pdf = FPDF()
+        pdf.add_page()
+        pdf.set_font("Arial", "B", 16)
+        pdf.cell(200, 10, txt="Mental Health Report", ln=True, align="C")
+        pdf.ln(10)
+        pdf.set_font("Arial", size=12)
+        pdf.cell(200, 10, txt=f"Name: {name}", ln=True)
+        pdf.cell(200, 10, txt=f"Email: {email}", ln=True)
+        pdf.cell(200, 10, txt=f"Age: {age}", ln=True)
+        pdf.cell(200, 10, txt=f"Weight: {weight}", ln=True)
+        pdf.cell(200, 10, txt=f"Mood: {mood}", ln=True)
+        pdf.cell(200, 10, txt=f"Overall Score: {score}%", ln=True)
+        pdf.cell(200, 10, txt=f"Status: {status}", ln=True)
+        pdf.output("mental_health_report.pdf") # PDF is generated
+
+        # ----- Send Email Logic -----
         msg = EmailMessage()
         msg['Subject'] = "Your Mental Health Report"
         msg['From'] = EMAIL_USER
