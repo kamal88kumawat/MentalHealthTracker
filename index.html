@@ -1,129 +1,261 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8">
+
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <title>Mental Health Awareness Campaign</title>
+
   <link rel="stylesheet" href="style.css">
+
 </head>
+
 <body>
 
+
+
   <header class="hero">
+
     <div class="hero-content">
+
       <h1>Mental Health Tracker</h1>
+
       <p>Your mental health matters — let’s prioritize it together.</p>
+
     </div>
+
   </header>
 
+
+
   <section class="about">
+
     <h2>What is Mental Health?</h2>
+
     <div class="content">
+
       <img src="mental-health.avif" alt="Mental Health Awareness">
+
       <p>
+
         Mental health includes our emotional, psychological, and social well-being. It affects how we think, feel, and act, 
+
         and it also impacts how we handle stress, relate to others, and make choices. Good mental health is essential at every stage of life.
+
       </p>
+
     </div>
+
+
 
     <h2>About The Tracker</h2>
+
     <div class="content">
+
       <img src="campaign-image.png" alt="Campaign">
+
       <p>
+
         This Mental Health Tracker is aimed at promoting the importance of mental well-being, breaking stigma, and encouraging open conversations about emotional health. 
+
         You can track your Mental Health by clicking the button below and sharing your problems.
+
       </p>
+
     </div>
+
   </section>
+
+
 
   <section class="cta">
+
     <h2>Track your Mental Health</h2>
+
     <p>Click the button below to fill out a short mental health form.</p>
+
     <a href="form.html" class="button">Start</a>
+
   </section>
 
-   <div class="chatbot-container">
+
+
+ <!-- <!-- Bottom Chatbot Div -->
+
+  <div class="chatbot-container">
+
     <img src="https://cdn-icons-png.flaticon.com/512/4712/4712023.png" alt="Chatbot Logo">
+
     <span>Chat with us</span>
+
   </div> -->
 
-  <div class="chatbot-window" id="chatbotWindow">
+
+
+  <!-- Chatbot Messages Window -->
+
+<div class="chatbot-window" id="chatbotWindow">
+
   <div class="chat-header">
+
     <img src="https://cdn-icons-png.flaticon.com/512/4712/4712023.png" alt="Chatbot Logo">
+
     <span>Mental Health Chat</span>
+
     <button onclick="toggleChat()" class="close-btn">✖</button>
+
   </div>
+
   <div class="chat-body" id="chatMessages"></div>
+
   <input type="text" id="chatInput" placeholder="Type a message..." onkeydown="if(event.key==='Enter'){sendChat()}">
+
 </div>
 
 
-  <script>
+
+
+
+  <!-- Javascript for chatbot -->
+
+<script>
+
 const chatbotWindow = document.getElementById('chatbotWindow');
+
 const chatbotBtn = document.querySelector('.chatbot-container');
+
+
 
 chatbotBtn.addEventListener('click', toggleChat);
 
+
+
 function toggleChat() {
+
   if(chatbotWindow.style.display === 'flex') {
+
     chatbotWindow.style.display = 'none';
+
   } else {
+
     chatbotWindow.style.display = 'flex';
+
   }
+
 }
+
+
 
 function sendChat() {
+
   const input = document.getElementById('chatInput');
+
   const messages = document.getElementById('chatMessages');
+
   const text = input.value.trim();
+
   if(!text) return;
 
+
+
   // User message
+
   const userMsg = document.createElement('div');
+
   userMsg.className = 'message user';
+
   userMsg.textContent = text;
+
   messages.appendChild(userMsg);
 
+
+
   input.value = '';
+
   messages.scrollTop = messages.scrollHeight;
 
+
+
   // Bot response
+
   setTimeout(() => {
+
     const botMsg = document.createElement('div');
+
     botMsg.className = 'message bot';
+
     botMsg.textContent = getBotReply(text);
+
     messages.appendChild(botMsg);
+
     messages.scrollTop = messages.scrollHeight;
+
   }, 500);
+
 }
 
+
+
 // Improved bot responses
+
 function getBotReply(msg) {
+
   msg = msg.toLowerCase();
 
+
+
   const responses = {
+
     greeting: [
+
       "Hello! How are you feeling today?",
+
       "Hey there! How’s your day going?",
+
       "Hi! Hope you’re doing okay today."
+
     ],
+
     stress: [
+
       "I understand. Try taking a few deep breaths or a short walk.",
+
       "Stress can be tough. Listening to music or stretching might help.",
+
       "Take a moment for yourself. Small breaks can reduce stress."
+
     ],
+
     sad: [
+
       "I’m here for you. Want to talk more about it?",
+
       "It’s okay to feel sad sometimes. Sharing can help lighten it.",
+
       "I understand. Remember, tough moments pass too."
+
     ],
+
     happy: [
+
       "That’s awesome! Keep doing what makes you happy.",
+
       "Great to hear! Celebrate those little joys.",
+
       "Wonderful! Happiness is contagious, keep it going."
+
     ],
+
     help: [
+
       "You can fill out the form above to track your mental health.",
+
       "If you need support, talking to someone you trust can help.",
+
       "I’m here to listen, and the form can help you reflect on your feelings."
     ],
     default: [
@@ -132,50 +264,38 @@ function getBotReply(msg) {
       "I’m here for you. Could you elaborate a little?"
     ]
   };
-
   if (msg.includes("hi") || msg.includes("hello") || msg.includes("hey"))
     return responses.greeting[Math.floor(Math.random() * responses.greeting.length)];
-
   if (msg.includes("stress") || msg.includes("anxious") || msg.includes("anxiety"))
     return responses.stress[Math.floor(Math.random() * responses.stress.length)];
-
   if (msg.includes("sad") || msg.includes("depressed") || msg.includes("unhappy"))
     return responses.sad[Math.floor(Math.random() * responses.sad.length)];
-
   if (msg.includes("happy") || msg.includes("good") || msg.includes("great") || msg.includes("fine"))
     return responses.happy[Math.floor(Math.random() * responses.happy.length)];
-
   if (msg.includes("help") || msg.includes("support") || msg.includes("advice"))
     return responses.help[Math.floor(Math.random() * responses.help.length)];
-
   // fallback if none of the keywords match
   return responses.default[Math.floor(Math.random() * responses.default.length)];
 }
 </script>
-
    <script>
 const form = document.querySelector('form');
 const submitBtn = form.querySelector('button[type="submit"]');
-
 // Create Download & Email buttons dynamically
 const downloadBtn = document.createElement('button');
 downloadBtn.textContent = "Download Report";
 downloadBtn.disabled = true;
 downloadBtn.style.marginTop = "10px";
 form.appendChild(downloadBtn);
-
 const emailBtn = document.createElement('button');
 emailBtn.textContent = "Send Report via Email";
 emailBtn.disabled = true;
 emailBtn.style.marginTop = "10px";
 form.appendChild(emailBtn);
-
 let pdfFile = "";
-
 form.addEventListener('submit', function(e){
     e.preventDefault();
     const formData = new FormData(form);
-
     fetch('/submit', { method: 'POST', body: formData })
     .then(res => res.json())
     .then(data => {
@@ -187,15 +307,12 @@ form.addEventListener('submit', function(e){
         }
     });
 });
-
 downloadBtn.addEventListener('click', ()=>{
     window.location.href = pdfFile;
 });
-
 emailBtn.addEventListener('click', ()=>{
     const email = form.querySelector('#email').value;
     if(!email){ alert("Please enter your email"); return; }
-
     fetch('/send_email', {
         method: 'POST',
         headers: {'Content-Type':'application/x-www-form-urlencoded'},
@@ -208,11 +325,8 @@ emailBtn.addEventListener('click', ()=>{
     });
 });
 </script>
-
-
   <footer>
     <p>&copy; 2025 Mental Health Tracker | Helpline: 1800-123-4567</p>
   </footer>
-
 </body>
 </html>
