@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mental Health Tracker Form</title>
-    <link rel="stylesheet" href="form.css" />
+    <link rel="stylesheet" href="css/form.css" />
   </head>
   <body>
     <div class="form-container">
@@ -198,48 +198,66 @@
       const downloadBtn = document.getElementById("downloadBtn");
       const emailBtn = document.getElementById("emailBtn");
 
-      let pdfFile = "";
+      let pdfUrl = "";
 
-      form.addEventListener("submit", (e) => {
+      form.addEventListener("submit", async (e) => {
         e.preventDefault();
-        const formData = new FormData(form);
+        const name = document.getElementById("name").value;
+        const age = document.getElementById("age").value;
+        const email = document.getElementById("email").value;
 
-        fetch("/submit", { method: "POST", body: formData })
-          .then((res) => res.json())
-          .then((data) => {
-            if (data.status === "success") {
-              alert("Report generated!");
-              pdfFile = data.pdf_file;
-              downloadBtn.disabled = false;
-              emailBtn.disabled = false;
-            }
+        // Minimal payload expected by backend; set a default mood
+        const payload = { name, age, email, mood: "neutral" };
+
+        try {
+          const res = await fetch("http://localhost:10000/submit", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
           });
+          const data = await res.json();
+          if (res.ok) {
+            alert("Report generated!");
+            pdfUrl = `http://localhost:10000${data.pdf_url || "/download"}`;
+            downloadBtn.disabled = false;
+            emailBtn.disabled = false;
+          } else {
+            alert(data.error || "Failed to generate report");
+          }
+        } catch (err) {
+          alert("Network error. Is the backend running on port 10000?");
+        }
       });
 
       downloadBtn.addEventListener("click", () => {
-        window.location.href = pdfFile;
+        if (pdfUrl) window.location.href = pdfUrl;
       });
 
-      emailBtn.addEventListener("click", () => {
-        const email = form.querySelector("#email").value;
+      emailBtn.addEventListener("click", async () => {
+        const name = document.getElementById("name").value;
+        const age = document.getElementById("age").value;
+        const email = document.getElementById("email").value;
         if (!email) {
           alert("Enter your email");
           return;
         }
 
-        fetch("/send_email", {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: `email=${encodeURIComponent(
-            email
-          )}&pdf_file=${encodeURIComponent(pdfFile)}`,
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            if (data.status === "email_sent") {
-              alert("Report sent to your email!");
-            }
+        const payload = { name, age, email, mood: "neutral" };
+        try {
+          const res = await fetch("http://localhost:10000/send_email", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
           });
+          const data = await res.json();
+          if (res.ok) {
+            alert(data.message || "Report sent to your email!");
+          } else {
+            alert(data.error || "Failed to send email");
+          }
+        } catch (err) {
+          alert("Network error. Is the backend running on port 10000?");
+        }
       });
     </script>
   </body>

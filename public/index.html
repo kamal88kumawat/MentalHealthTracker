@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Mental Health Awareness Campaign</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
     <header class="hero">
@@ -17,7 +17,7 @@
     <section class="about">
       <h2>What is Mental Health?</h2>
       <div class="content">
-        <img src="mental-health.avif" alt="Mental Health Awareness" />
+        <img src="img/mental-health.avif" alt="Mental Health Awareness" />
         <p>
           Mental health includes our emotional, psychological, and social
           well-being. It affects how we think, feel, and act, and it also
@@ -28,7 +28,7 @@
 
       <h2>About The Tracker</h2>
       <div class="content">
-        <img src="campaign-image.png" alt="Campaign" />
+        <img src="img/campaign-image.png" alt="Campaign" />
         <p>
           This Mental Health Tracker is aimed at promoting the importance of
           mental well-being, breaking stigma, and encouraging open conversations
@@ -201,64 +201,79 @@
 
     <script>
       const form = document.querySelector("form");
-      const submitBtn = form.querySelector('button[type="submit"]');
+      if (form) {
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const downloadBtn = document.createElement("button");
+        downloadBtn.textContent = "Download Report";
+        downloadBtn.disabled = true;
+        downloadBtn.style.marginTop = "10px";
+        form.appendChild(downloadBtn);
 
-      // Create Download & Email buttons dynamically
-      const downloadBtn = document.createElement("button");
-      downloadBtn.textContent = "Download Report";
-      downloadBtn.disabled = true;
-      downloadBtn.style.marginTop = "10px";
-      form.appendChild(downloadBtn);
+        const emailBtn = document.createElement("button");
+        emailBtn.textContent = "Send Report via Email";
+        emailBtn.disabled = true;
+        emailBtn.style.marginTop = "10px";
+        form.appendChild(emailBtn);
 
-      const emailBtn = document.createElement("button");
-      emailBtn.textContent = "Send Report via Email";
-      emailBtn.disabled = true;
-      emailBtn.style.marginTop = "10px";
-      form.appendChild(emailBtn);
+        let pdfUrl = "";
 
-      let pdfFile = "";
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const name = form.querySelector("#name")?.value || "";
+          const age = form.querySelector("#age")?.value || "";
+          const email = form.querySelector("#email")?.value || "";
+          const payload = { name, age, email, mood: "neutral" };
 
-      form.addEventListener("submit", function (e) {
-        e.preventDefault();
-        const formData = new FormData(form);
-
-        fetch("/submit", { method: "POST", body: formData })
-          .then((res) => res.json())
-          .then((data) => {
-            if (data.status === "success") {
-              pdfFile = data.pdf;
+          try {
+            const res = await fetch("http://localhost:10000/submit", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload),
+            });
+            const data = await res.json();
+            if (res.ok) {
               alert("Report generated successfully!");
+              pdfUrl = `http://localhost:10000${data.pdf_url || "/download"}`;
               downloadBtn.disabled = false;
               emailBtn.disabled = false;
+            } else {
+              alert(data.error || "Failed to generate report");
             }
-          });
-      });
+          } catch (_) {
+            alert("Network error. Is the backend running on port 10000?");
+          }
+        });
 
-      downloadBtn.addEventListener("click", () => {
-        window.location.href = pdfFile;
-      });
+        downloadBtn.addEventListener("click", () => {
+          if (pdfUrl) window.location.href = pdfUrl;
+        });
 
-      emailBtn.addEventListener("click", () => {
-        const email = form.querySelector("#email").value;
-        if (!email) {
-          alert("Please enter your email");
-          return;
-        }
-
-        fetch("/send_email", {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: `email=${encodeURIComponent(
-            email
-          )}&pdf_file=${encodeURIComponent(pdfFile)}`,
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            if (data.status === "email_sent") {
-              alert("Report sent to your email!");
+        emailBtn.addEventListener("click", async () => {
+          const name = form.querySelector("#name")?.value || "";
+          const age = form.querySelector("#age")?.value || "";
+          const email = form.querySelector("#email")?.value || "";
+          if (!email) {
+            alert("Please enter your email");
+            return;
+          }
+          const payload = { name, age, email, mood: "neutral" };
+          try {
+            const res = await fetch("http://localhost:10000/send_email", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload),
+            });
+            const data = await res.json();
+            if (res.ok) {
+              alert(data.message || "Report sent to your email!");
+            } else {
+              alert(data.error || "Failed to send email");
             }
-          });
-      });
+          } catch (_) {
+            alert("Network error. Is the backend running on port 10000?");
+          }
+        });
+      }
     </script>
 
     <footer>
