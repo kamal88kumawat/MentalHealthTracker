@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const data = { name, email, age, weight, mood };
 
     try {
-      const response = await fetch("https://mentalhealthtracker-3eip.onrender.com/submit" , {
+      const response = await fetch("https://mentalhealthtracker-3.onrender.com/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -35,13 +35,13 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   downloadBtn.addEventListener("click", function () {
-    window.location.href = "https://mentalhealthtracker-3eip.onrender.com/download";
+    window.location.href = "https://mentalhealthtracker-3.onrender.com/download";
   });
 
   emailBtn.addEventListener("click", async function () {
     const email = document.getElementById("email").value;
     try {
-      const response = await fetch("https://mentalhealthtracker-3eip.onrender.com/send_email", {
+      const response = await fetch("https://mentalhealthtracker-3.onrender.com/send_email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
