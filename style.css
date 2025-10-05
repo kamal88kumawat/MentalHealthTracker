@@ -1,143 +1,497 @@
 body {
+
+  font-family: Arial, sans-serif;
+
+  background: #f0f7ff;
+
+  margin: 0;
+
+  padding: 20px;
+
+}
+
+
+
+.form-container {
+
+  background: #ffffff;
+
+  border-radius: 12px;
+
+  padding: 30px;
+
+  max-width: 750px;
+
+  margin: auto;
+
+  box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+
+}
+
+
+
+h1 {
+
+  text-align: center;
+
+  color: #2563eb;
+
+  margin-bottom: 20px;
+
+}
+
+
+
+h2 {
+
+  margin-top: 25px;
+
+  margin-bottom: 10px;
+
+  color: #333;
+
+  border-left: 4px solid #2563eb;
+
+  padding-left: 8px;
+
+}
+
+
+
+.form-group {
+
+  margin-bottom: 18px;
+
+}
+
+
+
+label {
+
+  display: block;
+
+  margin-bottom: 6px;
+
+  font-weight: bold;
+
+  color: #333;
+
+}
+
+
+
+input[type="text"],
+
+input[type="number"],
+
+input[type="email"],
+
+select,
+
+textarea {
+
+  width: 100%;
+
+  padding: 10px;
+
+  border-radius: 6px;
+
+  border: 1px solid #ccc;
+
+  font-size: 15px;
+
+  margin-top: 3px;
+
+}
+
+
+
+textarea {
+
+  resize: none;
+
+}
+
+
+
+input[type="range"] {
+
+  width: 100%;
+
+  margin-top: 8px;
+
+}
+
+
+
+.options, .checkbox-options {
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 12px;
+
+  margin-top: 8px;
+
+}
+
+
+
+.options label, .checkbox-options label {
+
+  background: #e6f0ff;
+
+  border-radius: 8px;
+
+  padding: 8px 12px;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+
+}
+
+
+
+.options label:hover,
+
+.checkbox-options label:hover {
+
+  background: #cce0ff;
+
+}
+
+
+
+.mood {
+
+  font-size: 24px;
+
+  margin-top: 8px;
+
+}
+
+
+
+button {
+
+  display: block;
+
+  width: 100%;
+
+  margin-top: 25px;
+
+  padding: 14px;
+
+  font-size: 16px;
+
+  background: #2563eb;
+
+  color: #fff;
+
+  border: none;
+
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+
+}
+
+
+
+button:hover {
+
+  background: #1d4ed8;
+
+}
+
+ye h form .css
+
+body {
+
     font-family: 'Segoe UI', sans-serif;
+
     margin: 0;
+
     padding: 0;
+
     background-color: #f5f5f5;
+
     color: #333;
+
   }
+
   
+
   .hero {
+
     background: url('https://www.calmsage.com/wp-content/uploads/2020/04/Hues-of-blue-perfect-to-find-your-calm..jpg') 
+
                   no-repeat center center/cover;
+
     color: white;
+
     text-align: center;
+
     padding: 100px 20px;
+
     height: 90px;
+
   }
+
   
+
   .hero h1 {
+
     font-size: 60px;
+
     margin: 0px;
+
   }
+
   
+
   .hero p {
+
     font-size: 22px;
+
     margin: 20px 0;
+
   }
+
   
+
   .about {
+
     padding: 60px 20px;
+
     text-align: center;
+
   }
+
   
+
   .about h2 {
+
     font-size: 32px;
+
     color: #6a9fb5;
+
     margin-bottom: 20px;
+
   }
+
   
+
   .content {
+
     display: flex;
+
     flex-wrap: wrap;
+
     justify-content: center;
+
     align-items: center;
+
     margin-bottom: 50px;
+
   }
+
   
+
   .content img {
+
     max-width: 350px;
+
     border-radius: 8px;
+
     margin: 10px 20px;
+
     height: 200px;
+
   }
+
   
+
   .content p {
+
     max-width: 600px;
+
     font-size: 18px;
+
     line-height: 1.6;
+
     text-align: left;
+
     margin: 10px 20px;
+
   }
+
   
+
   .cta {
+
     background-color: #e3f2fd;
+
     padding: 60px 20px;
+
     text-align: center;
+
   }
+
   
+
   .cta h2 {
+
     font-size: 30px;
+
     margin-bottom: 20px;
+
   }
+
   
+
   .cta p {
+
     font-size: 18px;
+
     max-width: 600px;
+
     margin: 0 auto 30px;
+
   }
+
   
+
   .button {
+
     background-color: #6a9fb5;
+
     color: white;
+
     padding: 12px 24px;
+
     text-decoration: none;
+
     border-radius: 6px;
+
     font-size: 18px;
+
   }
+
   
+
   .button:hover {
+
     background-color: #518399;
+
   }
+
+
+
 
 
   /* Bottom chatbot container */
+
 .chatbot-container {
+
   position: fixed;
+
   bottom: 20px;
+
   right: 20px;
+
   width: 300px;
+
   height: 60px;
+
   background-color: #f0f8ff; /* light pastel blue */
+
   border-radius: 30px;
+
   display: flex;
+
   align-items: center;
+
   padding: 0 15px;
+
   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+
   cursor: pointer;
+
   transition: all 0.3s ease; /* smooth transition */
+
 }
+
+
 
 .chatbot-container img {
+
   height: 40px;
+
   width: 40px;
+
   margin-right: 10px;
+
   transition: transform 0.3s ease;
+
 }
+
+
 
 .chatbot-container span {
+
   font-size: 16px;
+
   color: #003366;
+
   transition: color 0.3s ease;
+
 }
+
+
 
 /* Hover effect */
+
 .chatbot-container:hover {
+
   transform: translateX(-50%) scale(1.05); /* slightly bigger */
+
   box-shadow: 0 8px 20px rgba(0,0,0,0.3); /* stronger shadow/glow */
+
   background-color: #e0f0ff; /* slightly brighter background */
+
 }
+
+
 
 .chatbot-container:hover img {
+
   transform: rotate(10deg); /* subtle rotation */
+
 }
 
+
+
 .chatbot-container:hover span {
+
   color: #0055aa; /* darker text on hover */
+
 }
+
   
+
   footer {
+
     background-color: #6a9fb5;
+
     color: white;
+
     text-align: center;
+
     padding: 15px 10px;
+
   }
