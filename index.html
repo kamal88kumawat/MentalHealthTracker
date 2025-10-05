@@ -49,11 +49,17 @@
 
   <!-- Chatbot Messages Window -->
 <div class="chatbot-window" id="chatbotWindow">
+  
   <div class="chat-header">
-    <img src="https://cdn-icons-png.flaticon.com/512/4712/4712023.png" alt="Chatbot Logo">
-    <span>Mental Health Chat</span>
+    
+    <div style="display: flex; align-items: center;">
+        <img src="https://cdn-icons-png.flaticon.com/512/4712/4712023.png" alt="Chatbot Logo">
+        <span>Mental Health Chat</span>
+    </div>
+    
     <button onclick="toggleChat()" class="close-btn">✖</button>
   </div>
+  
   <div class="chat-body" id="chatMessages"></div>
   <input type="text" id="chatInput" placeholder="Type a message..." onkeydown="if(event.key==='Enter'){sendChat()}">
 </div>
