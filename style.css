@@ -121,10 +121,11 @@ body {
 }
 
 /* Hover effect */
+/* Hover effect */
 .chatbot-container:hover {
-  transform: translateX(-50%) scale(1.05); /* slightly bigger */
-  box-shadow: 0 8px 20px rgba(0,0,0,0.3); /* stronger shadow/glow */
-  background-color: #e0f0ff; /* slightly brighter background */
+  transform: scale(1.05); /* ⬅️ translateX(-50%) hataya */
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  background-color: #e0f0ff;
 }
 
 .chatbot-container:hover img {
@@ -143,34 +144,49 @@ body {
   }
 
 .chatbot-window {
+    /* Position aur size set karte hain */
     position: fixed;
-    bottom: 90px; /* Chatbot container ke upar */
+    bottom: 90px;
     right: 20px;
-    width: 350px; /* Window ka size chota rakho */
-    height: 450px; /* Height set karo */
+    width: 350px;
+    height: 450px; 
     background: white;
     border: 1px solid #ccc;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     z-index: 1000;
     
-    /* Initially hide it, but use flex as your JS expects */
-    display: none; /* ⬅️ IMPORTANT: Yeh add karo! */
+    /* Display properties (JS ke liye) */
+    display: none; /* Initially hidden */
     flex-direction: column;
     overflow: hidden;
 }
-
 .chat-header {
     display: flex;
+    /* content ko dono side push karo */
+    justify-content: space-between; 
     align-items: center;
     padding: 10px;
-    background-color: #6a9fb5; /* Header background */
+    background-color: #6a9fb5; 
     color: white;
+}
+.chat-header .close-btn {
+    /* Button ko default styling se hatana */
+    background: none;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 5px; /* Thoda padding takki click karna easy ho */
+    margin-left: 10px; /* Text se thoda door */
+    /* Remove default button focus/hover effects if needed */
+    outline: none;
 }
 
 .chat-header img {
-    height: 30px; /* Logo size chota karo */
+    height: 30px; 
     width: 30px;
+    margin-right: 12px; /* ⬅️ Gap badhaya */
 }
 
 .chat-body {
@@ -189,10 +205,20 @@ body {
 }
 /* ... (aur styling tum apne hisaab se kar sakte ho) ... */
 
-  
+  /* 3. Input Box ki height badhana */
+#chatInput {
+    /* Yeh naya code hai */
+    width: 100%;
+    padding: 12px 10px; /* ⬅️ Height badhane ke liye padding badhaya */
+    box-sizing: border-box; /* Padding andar hi rahe */
+    border: 1px solid #ccc;
+    border-top: none;
+    font-size: 15px;
+}
 
 
 
 
 
   
+
