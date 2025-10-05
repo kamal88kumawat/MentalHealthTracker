@@ -142,7 +142,55 @@ body {
     padding: 15px 10px;
   }
 
+.chatbot-window {
+    position: fixed;
+    bottom: 90px; /* Chatbot container ke upar */
+    right: 20px;
+    width: 350px; /* Window ka size chota rakho */
+    height: 450px; /* Height set karo */
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    
+    /* Initially hide it, but use flex as your JS expects */
+    display: none; /* ⬅️ IMPORTANT: Yeh add karo! */
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.chat-header {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: #6a9fb5; /* Header background */
+    color: white;
+}
+
+.chat-header img {
+    height: 30px; /* Logo size chota karo */
+    width: 30px;
+}
+
+.chat-body {
+    flex-grow: 1;
+    padding: 10px;
+    overflow-y: auto;
+    background-color: #f9f9f9;
+}
+
+/* Chat messages ke liye bhi styling add karna padega (user aur bot) */
+.message {
+    padding: 8px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    max-width: 80%;
+}
+/* ... (aur styling tum apne hisaab se kar sakte ho) ... */
+
   
+
 
 
 
