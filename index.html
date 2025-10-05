@@ -30,21 +30,41 @@
       <div class="content">
         <img src="campaign-image.png" alt="Campaign" />
         <p>
-          This Mental Health Tracker is aimed at promoting the importance of
-          mental well-being, breaking stigma, and encouraging open conversations
-          about emotional health. You can track your Mental Health by clicking
-          the button below and sharing your problems.
+          This Mental Health Tracker helps you understand your emotional
+          well-being. You can track your mental health by filling the short form
+          below and getting a personalized report.
         </p>
       </div>
     </section>
 
     <section class="cta">
       <h2>Track your Mental Health</h2>
-      <p>Click the button below to fill out a short mental health form.</p>
-      <a href="form.html" class="button">Start</a>
+      <form id="mentalHealthForm">
+        <input type="text" id="name" placeholder="Enter your name" required />
+        <input type="email" id="email" placeholder="Enter your email" required />
+        <input type="number" id="age" placeholder="Enter your age" required />
+        <input
+          type="number"
+          id="weight"
+          placeholder="Enter your weight (kg)"
+          required
+        />
+        <select id="mood" required>
+          <option value="">Select your mood</option>
+          <option value="happy">Happy</option>
+          <option value="neutral">Neutral</option>
+          <option value="sad">Sad</option>
+          <option value="stressed">Stressed</option>
+        </select>
+        <button type="submit" id="submitBtn">Submit & Generate Report</button>
+      </form>
+
+      <div id="message"></div>
+      <button id="downloadBtn" style="display: none">Download Report</button>
+      <button id="emailBtn" style="display: none">Send Report via Email</button>
     </section>
 
-    <!-- <!-- Bottom Chatbot Div -->
+    <!-- Chatbot Section (unchanged) -->
     <div class="chatbot-container">
       <img
         src="https://cdn-icons-png.flaticon.com/512/4712/4712023.png"
@@ -52,9 +72,7 @@
       />
       <span>Chat with us</span>
     </div>
-    -->
 
-    <!-- Chatbot Messages Window -->
     <div class="chatbot-window" id="chatbotWindow">
       <div class="chat-header">
         <img
@@ -73,197 +91,79 @@
       />
     </div>
 
-    <!-- Javascript for chatbot -->
-    <script>
-      const chatbotWindow = document.getElementById("chatbotWindow");
-      const chatbotBtn = document.querySelector(".chatbot-container");
-
-      chatbotBtn.addEventListener("click", toggleChat);
-
-      function toggleChat() {
-        if (chatbotWindow.style.display === "flex") {
-          chatbotWindow.style.display = "none";
-        } else {
-          chatbotWindow.style.display = "flex";
-        }
-      }
-
-      function sendChat() {
-        const input = document.getElementById("chatInput");
-        const messages = document.getElementById("chatMessages");
-        const text = input.value.trim();
-        if (!text) return;
-
-        // User message
-        const userMsg = document.createElement("div");
-        userMsg.className = "message user";
-        userMsg.textContent = text;
-        messages.appendChild(userMsg);
-
-        input.value = "";
-        messages.scrollTop = messages.scrollHeight;
-
-        // Bot response
-        setTimeout(() => {
-          const botMsg = document.createElement("div");
-          botMsg.className = "message bot";
-          botMsg.textContent = getBotReply(text);
-          messages.appendChild(botMsg);
-          messages.scrollTop = messages.scrollHeight;
-        }, 500);
-      }
-
-      // Improved bot responses
-      function getBotReply(msg) {
-        msg = msg.toLowerCase();
-
-        const responses = {
-          greeting: [
-            "Hello! How are you feeling today?",
-            "Hey there! How’s your day going?",
-            "Hi! Hope you’re doing okay today.",
-          ],
-          stress: [
-            "I understand. Try taking a few deep breaths or a short walk.",
-            "Stress can be tough. Listening to music or stretching might help.",
-            "Take a moment for yourself. Small breaks can reduce stress.",
-          ],
-          sad: [
-            "I’m here for you. Want to talk more about it?",
-            "It’s okay to feel sad sometimes. Sharing can help lighten it.",
-            "I understand. Remember, tough moments pass too.",
-          ],
-          happy: [
-            "That’s awesome! Keep doing what makes you happy.",
-            "Great to hear! Celebrate those little joys.",
-            "Wonderful! Happiness is contagious, keep it going.",
-          ],
-          help: [
-            "You can fill out the form above to track your mental health.",
-            "If you need support, talking to someone you trust can help.",
-            "I’m here to listen, and the form can help you reflect on your feelings.",
-          ],
-          default: [
-            "Hmm, I didn’t fully understand that. Could you tell me more?",
-            "I’m listening. Can you describe your feelings a bit?",
-            "I’m here for you. Could you elaborate a little?",
-          ],
-        };
-
-        if (msg.includes("hi") || msg.includes("hello") || msg.includes("hey"))
-          return responses.greeting[
-            Math.floor(Math.random() * responses.greeting.length)
-          ];
-
-        if (
-          msg.includes("stress") ||
-          msg.includes("anxious") ||
-          msg.includes("anxiety")
-        )
-          return responses.stress[
-            Math.floor(Math.random() * responses.stress.length)
-          ];
-
-        if (
-          msg.includes("sad") ||
-          msg.includes("depressed") ||
-          msg.includes("unhappy")
-        )
-          return responses.sad[
-            Math.floor(Math.random() * responses.sad.length)
-          ];
-
-        if (
-          msg.includes("happy") ||
-          msg.includes("good") ||
-          msg.includes("great") ||
-          msg.includes("fine")
-        )
-          return responses.happy[
-            Math.floor(Math.random() * responses.happy.length)
-          ];
-
-        if (
-          msg.includes("help") ||
-          msg.includes("support") ||
-          msg.includes("advice")
-        )
-          return responses.help[
-            Math.floor(Math.random() * responses.help.length)
-          ];
-
-        // fallback if none of the keywords match
-        return responses.default[
-          Math.floor(Math.random() * responses.default.length)
-        ];
-      }
-    </script>
-
-    <script>
-      const form = document.querySelector("form");
-      const submitBtn = form.querySelector('button[type="submit"]');
-
-      // Create Download & Email buttons dynamically
-      const downloadBtn = document.createElement("button");
-      downloadBtn.textContent = "Download Report";
-      downloadBtn.disabled = true;
-      downloadBtn.style.marginTop = "10px";
-      form.appendChild(downloadBtn);
-
-      const emailBtn = document.createElement("button");
-      emailBtn.textContent = "Send Report via Email";
-      emailBtn.disabled = true;
-      emailBtn.style.marginTop = "10px";
-      form.appendChild(emailBtn);
-
-      let pdfFile = "";
-
-      form.addEventListener("submit", function (e) {
-        e.preventDefault();
-        const formData = new FormData(form);
-
-        fetch("/submit", { method: "POST", body: formData })
-          .then((res) => res.json())
-          .then((data) => {
-            if (data.status === "success") {
-              pdfFile = data.pdf;
-              alert("Report generated successfully!");
-              downloadBtn.disabled = false;
-              emailBtn.disabled = false;
-            }
-          });
-      });
-
-      downloadBtn.addEventListener("click", () => {
-        window.location.href = pdfFile;
-      });
-
-      emailBtn.addEventListener("click", () => {
-        const email = form.querySelector("#email").value;
-        if (!email) {
-          alert("Please enter your email");
-          return;
-        }
-
-        fetch("/send_email", {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: `email=${encodeURIComponent(
-            email
-          )}&pdf_file=${encodeURIComponent(pdfFile)}`,
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            if (data.status === "email_sent") {
-              alert("Report sent to your email!");
-            }
-          });
-      });
-    </script>
-
     <footer>
       <p>&copy; 2025 Mental Health Tracker | Helpline: 1800-123-4567</p>
     </footer>
+
+    <script>
+      const backendURL = "https://mentalhealthtracker-3.onrender.com";
+
+      const form = document.getElementById("mentalHealthForm");
+      const downloadBtn = document.getElementById("downloadBtn");
+      const emailBtn = document.getElementById("emailBtn");
+      const messageDiv = document.getElementById("message");
+
+      form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const data = {
+          name: document.getElementById("name").value,
+          email: document.getElementById("email").value,
+          age: document.getElementById("age").value,
+          weight: document.getElementById("weight").value,
+          mood: document.getElementById("mood").value,
+        };
+
+        messageDiv.innerText = "⏳ Generating your report...";
+
+        try {
+          const res = await fetch(`${backendURL}/submit`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+          });
+
+          const result = await res.json();
+
+          if (result.error) {
+            messageDiv.innerText = "❌ " + result.error;
+            return;
+          }
+
+          messageDiv.innerText = `✅ ${result.message} | Status: ${result.status}`;
+          downloadBtn.style.display = "inline-block";
+          emailBtn.style.display = "inline-block";
+        } catch (err) {
+          messageDiv.innerText = "❌ Server error: " + err;
+        }
+      });
+
+      downloadBtn.addEventListener("click", () => {
+        window.open(`${backendURL}/download`, "_blank");
+      });
+
+      emailBtn.addEventListener("click", async () => {
+        const email = document.getElementById("email").value;
+        if (!email) {
+          alert("Please enter your email first!");
+          return;
+        }
+
+        messageDiv.innerText = "📤 Sending report to your email...";
+
+        try {
+          const res = await fetch(`${backendURL}/send_email`, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams({ email }),
+          });
+          const result = await res.json();
+          if (result.message) messageDiv.innerText = "✅ " + result.message;
+          else messageDiv.innerText = "❌ " + result.error;
+        } catch (err) {
+          messageDiv.innerText = "❌ Email sending failed: " + err;
+        }
+      });
+    </script>
   </body>
 </html>
-
