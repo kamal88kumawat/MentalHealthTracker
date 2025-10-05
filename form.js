@@ -78,14 +78,13 @@ def download_report():
         return jsonify({"error": "No report found"}), 404
 
 
-# -------- Send Report via Email (UPDATED) --------
+# -------- Send Report via Email (LOGIC CORRECT) --------
 @app.route('/send_email', methods=['POST'])
 def send_email():
     try:
         # FIX: Now expecting JSON data (like /submit) to regenerate PDF
         data = request.get_json() 
         
-        # Saare required fields nikal rahe hain
         email = data.get('email')
         name = data.get('name', 'Unknown')
         age = data.get('age', 'N/A')
@@ -95,7 +94,7 @@ def send_email():
         if not email:
             return jsonify({"error": "Email not provided"}), 400
 
-        # ----- Logic for Score (Copied from /submit to ensure PDF generation) -----
+        # ----- Logic for Score (Ensuring PDF generation before sending) -----
         if mood.lower() in ['sad', 'stressed', 'angry']:
             score = 30
             status = "Needs Attention 🧠"
@@ -120,7 +119,7 @@ def send_email():
         pdf.cell(200, 10, txt=f"Mood: {mood}", ln=True)
         pdf.cell(200, 10, txt=f"Overall Score: {score}%", ln=True)
         pdf.cell(200, 10, txt=f"Status: {status}", ln=True)
-        pdf.output("mental_health_report.pdf") # PDF is generated
+        pdf.output("mental_health_report.pdf") 
 
         # ----- Send Email Logic -----
         msg = EmailMessage()
