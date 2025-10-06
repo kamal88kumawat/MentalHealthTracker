@@ -12,8 +12,11 @@ CORS(app)
 # -------- Load Environment Variables --------
 load_dotenv()
 
-EMAIL_USER = os.getenv("EMAIL_USER")
-EMAIL_PASS = os.getenv("EMAIL_PASS")
+#EMAIL_USER = os.getenv("EMAIL_USER")
+#EMAIL_PASS = os.getenv("EMAIL_PASS")
+
+EMAIL_USER="kamal088kumawat@gmail.com"
+EMAIL_PASS="hnjaxwnweyxdmpxz"
 
 # -------- Home Route --------
 @app.route('/')
@@ -88,6 +91,8 @@ def download_report():
 # -------- Send Report via Email (UPDATED) --------
 @app.route('/send_email', methods=['POST'])
 def send_email():
+    print(EMAIL_USER)
+    print(EMAIL_PASS)
     try:
         # Expecting JSON data (like /submit) to regenerate PDF
         data = request.get_json() 
