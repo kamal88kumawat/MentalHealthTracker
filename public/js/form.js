@@ -1,5 +1,26 @@
 // Frontend logic for Mental Health Tracker form submission
 // Calls the Flask backend using JSON and enables download/email actions
+async function sendMessage() {
+    let input = document.getElementById("userInput");
+    let message = input.value;
+
+    let res = await fetch("http://127.0.0.1:5000/chat", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ message: message })
+    });
+
+    let data = await res.json();
+
+    let chatbox = document.getElementById("chatbox");
+
+    chatbox.innerHTML += <p><b>You:</b> ${message}</p>;
+    chatbox.innerHTML += <p><b>Bot:</b> ${data.response}</p>;
+
+    input.value = "";
+}
 
 (function () {
   const BACKEND_URL = "http://localhost:10000";

@@ -44,7 +44,7 @@
       <a href="form.html" class="button">Start</a>
     </section>
 
-    <!-- <!-- Bottom Chatbot Div -->
+    <!--  Bottom Chatbot Div -->
     <div class="chatbot-container">
       <img
         src="https://cdn-icons-png.flaticon.com/512/4712/4712023.png"
@@ -52,7 +52,7 @@
       />
       <span>Chat with us</span>
     </div>
-    -->
+    
 
     <!-- Chatbot Messages Window -->
     <div class="chatbot-window" id="chatbotWindow">
@@ -88,20 +88,59 @@
         }
       }
 
-      function sendChat() {
-        const input = document.getElementById("chatInput");
-        const messages = document.getElementById("chatMessages");
-        const text = input.value.trim();
-        if (!text) return;
+      async function sendChat() {
+    const input = document.getElementById("chatInput");
+    const messages = document.getElementById("chatMessages");
+    const text = input.value.trim();
 
-        // User message
-        const userMsg = document.createElement("div");
-        userMsg.className = "message user";
-        userMsg.textContent = text;
-        messages.appendChild(userMsg);
+    if (!text) return;
 
-        input.value = "";
+    // User message
+    const userMsg = document.createElement("div");
+    userMsg.className = "message user";
+    userMsg.textContent = text;
+    messages.appendChild(userMsg);
+
+    input.value = "";
+    messages.scrollTop = messages.scrollHeight;
+
+    // Typing indicator (optional 🔥)
+    const typingMsg = document.createElement("div");
+    typingMsg.className = "message bot";
+    typingMsg.textContent = "Typing...";
+    messages.appendChild(typingMsg);
+
+    try {
+        const res = await fetch("http://127.0.0.1:5000/chat", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ message: text })
+        });
+
+        const data = await res.json();
+
+        // Remove typing...
+        messages.removeChild(typingMsg);
+
+        // Bot response
+        const botMsg = document.createElement("div");
+        botMsg.className = "message bot";
+        botMsg.textContent = data.response;
+
+        messages.appendChild(botMsg);
         messages.scrollTop = messages.scrollHeight;
+
+    } catch (error) {
+        messages.removeChild(typingMsg);
+
+        const errorMsg = document.createElement("div");
+        errorMsg.className = "message bot";
+        errorMsg.textContent = "Server error ❌";
+        messages.appendChild(errorMsg);
+    }
+}
 
         // Bot response
         setTimeout(() => {
@@ -111,7 +150,7 @@
           messages.appendChild(botMsg);
           messages.scrollTop = messages.scrollHeight;
         }, 500);
-      }
+      
 
       // Improved bot responses
       function getBotReply(msg) {
