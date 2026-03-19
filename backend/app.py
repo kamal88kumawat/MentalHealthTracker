@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 from fpdf import FPDF
+from main import chat_with_ai
 import smtplib
 from email.message import EmailMessage
 import os
@@ -17,6 +18,17 @@ load_dotenv()
 
 EMAIL_USER="kamal088kumawat@gmail.com"
 EMAIL_PASS="hnjaxwnweyxdmpxz"
+
+@app.route('/chat',methods=['POST'])
+def chat():
+    user_message = request.json.get("message")
+    
+    reply = chat_with_ai(user_message)
+    
+    return jsonify({"response":reply})
+
+if __name__ == "__main__":
+    app.run(debug=True)
 
 # -------- Home Route --------
 @app.route('/')
